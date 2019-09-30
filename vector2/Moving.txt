@@ -1,0 +1,8 @@
+interface Moving
+{
+  public float[] fire(int nAr,float xL, float yL, float...other);
+}
+interface ForLaser
+{
+  public float[] fire(float koef, float xL, float yL);
+}

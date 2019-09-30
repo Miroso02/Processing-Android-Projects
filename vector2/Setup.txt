@@ -1,0 +1,172 @@
+void setup()
+{
+  size(displayWidth, displayHeight);
+ // noSmooth();
+  rectMode(CENTER);
+
+  //*******************ИНСТРУКЦИЯ*****************************
+  //sn=new Cannon(1: количество пуль, за которые отвечает эта пушка (не знаешь – ставь 500),
+  //                2-3: координаты пушки (x,y),
+  //                4: задержка между выстрелами,
+  //                5: количество пуль, которые выпускаются за один выстрел,
+  //                6: HP пушки,
+  //                7: случайное перемещение: после скольких выстрелов перемещение; 0,если нет; 
+  //                8: функция движения каждой пули(номер текущей пули, координаты точки из пунктов 2-3):
+  //  1) float x,y,spArX,spArY – переменные, которые ты должен определить в этом методе
+  //  2) x=... ; y=... ; – координаты точки запуска пули 
+  //  P.S. Используй xL, yL и nAr
+  //  3) spArX=... ; spArY=... ; – скорость по x/y пули(скорость не меняется!!)
+  //  P.S. Используй nAr; xL, yL и какую-то другую хрень – не рекомендуется, АРТЁМ
+  //  4) float[] res={...}; ты должен вернуть минимум 5 значений:
+  //  1-4: x,y,spArX, spArY – см. выше
+  //  5: Множитель скорости пули (не знаешь – ставь 4)
+  //  Необязательные аргументы:
+  //  6: Количество рикошетов пули
+  //  7: Диаметр (размер) стрелы (не знаешь - ставь 10)
+  //  8: Ускорение ↓ пули
+  //************************************************************
+  //
+  s[0]=new Cannon(400, 100, height-100, 1, 4, 0, 100,true, new Moving() {
+    public float[] fire(int nAr, float xL, float yL, float...other)
+    {
+      float x=2000, y, spArX, spArY;
+      if(nAr%160<60)
+      {
+        float m=80*(nAr%4);
+        x=xL+m;
+      }
+      y=yL;
+      float tx=I.x-x, ty=I.y-y;
+      if(nAr%160<4)
+      {
+        spArX=tx/sqrt(sq(tx)+sq(ty));
+        spArY=ty/sqrt(sq(tx)+sq(ty));
+      }
+      else
+      {
+        spArX=other[2];
+        spArY=other[3];
+      }
+      float[] res= {
+        x, y, spArX, spArY, 14, 1, 20
+      };
+      return res;
+    }
+  }
+  );
+  s[1]=new Cannon(400, width/2, 100, 1, 4, 0, 100,true, new Moving() {
+    public float[] fire(int nAr, float xL, float yL, float...other)
+    {
+      float x=2000, y, spArX, spArY;
+      if(nAr%160<60)
+      {
+        float m=80*(nAr%4);
+        x=(xL-160)+m;
+      }
+      y=yL;
+      float tx=I.x-x, ty=I.y-y;
+      spArX=tx/sqrt(sq(tx)+sq(ty));
+      spArY=ty/sqrt(sq(tx)+sq(ty));
+      float[] res= {
+        x, y, spArX, spArY, 14, 0, 20
+      };
+      return res;
+    }
+  }
+  );
+  s[2]=new Cannon(400, width-100, height-100, 1, 4, 0, 100,true, new Moving() {
+    public float[] fire(int nAr, float xL, float yL, float...other)
+    {
+      float x=2000, y, spArX, spArY;
+      if(nAr%160<60)
+      {
+        float m=80*(nAr%4);
+        x=xL-m;
+      }
+      y=yL;
+      float tx=I.x-x, ty=I.y-y;
+      spArX=tx/sqrt(sq(tx)+sq(ty));
+      spArY=ty/sqrt(sq(tx)+sq(ty));
+      float[] res= {
+        x, y, spArX, spArY, 14, 1, 20
+      };
+      return res;
+    }
+  }
+  );
+  s[3]=new Cannon(500, width/2, 300, 30, 30, 0, 200,false, new Moving() {
+    public float[] fire(int nAr, float xL, float yL, float...other)
+    {
+      float x, y, spArX, spArY=0;
+      x=xL;
+      y=yL;
+      if(nAr%30<15 && nAr%30>10 || nAr%30<5 && nAr%30>0)
+      {
+        spArY=sin(PI*2/30*nAr);
+        spArX=cos(PI*2/30*nAr);
+      }
+      else spArX=1000;
+      float[] res= {
+        x, y, spArX, spArY, 4, 2, 10, 0.1
+      };
+      return res;
+    }
+  }
+  );
+  s[4]=new Cannon(500, width/2+300, height/2, 40, 20, 3, 100,false, new Moving() {
+    public float[] fire(int nAr, float xL, float yL, float... other)
+    {
+      float x, y, spArX, spArY;
+      x=xL;
+      y=yL;
+      spArY=sin(PI*2/20*nAr);
+      spArX=cos(PI*2/20*nAr);
+      float[] res= {
+        x, y, spArX, spArY, 8, 1, 15
+      };
+      return res;
+    }
+  }
+  );
+  s[5]=new Cannon(500, width/2, 40, 5, 1, 0, 200,false, new Moving() {
+    public float[] fire(int nAr, float xL, float yL, float... other)
+    {
+      float x, y, spArX, spArY;
+      x=xL;
+      y=yL;
+      spArY=sin(-0.4*nAr);
+      spArX=cos(0.4*nAr);
+      float[] res= {
+        x, y, spArX, spArY, 3, 1
+      };
+      return res;
+    }
+  }
+  );
+  l=new Laser(400,100,115,200, new ForLaser(){
+    public float[] fire(float koef, float xL, float yL)
+    {
+      float x,y,xt=xL,yt=yL;
+      float from=122, to=157, start=115;
+      x=xL;
+      y=yL;
+      if(koef>from && koef<to)
+      {
+        xt=2000*cos(0.01*koef);
+        yt=2000*sin(0.01*koef);
+        if(koef>=to-1)
+          koef=start;
+      }
+   
+      koef+=0.2;
+      float[] res={x,y,xt,yt,koef};
+      return res;
+    }
+  });
+  
+  time=0;
+  death=false;
+  restart=new Button(width/2-150, height/2+50, 400, 100);
+  I.x=width/2;
+  I.y=height-300;
+}

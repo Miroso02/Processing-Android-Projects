@@ -1,0 +1,129 @@
+class Arrow
+{
+  float x,y;
+  float speed;
+  float spArX=0,spArY=0;
+  int tim=0;
+  int rn=0;
+  int w,opp;
+  color col;
+  Arrow(float xx,float yy,float ss,int ww)
+  {
+    x=xx;
+    y=yy;
+    speed=ss;
+    w=ww;
+  }
+  
+  void display()
+  {
+    if(x+w/2>0 && x-w/2<width && y+w/2>0 && y-w/2<height)
+    {
+      stroke(col,opp);
+      strokeWeight(2);
+      fill(255,opp);
+      ellipse(x,y,w,w);
+    }
+  }
+  
+  void move()
+  {
+    int a=20;
+    if(tim>a)
+    {
+      x+=spArX;
+      y+=spArY;
+     // rikoshet(true, true);// rikoshet(x, y)
+    }
+    else if(tim==a)
+    {
+      targetX=I.x-x+I.w/2;
+      targetY=I.y-y+I.w/2;
+      //spArY=speed*sin(1.003*nAr);/*targetY*speed/sqrt(targetX*targetX+targetY*targetY)*/;
+    //  spArX=speed*cos(1*nAr)/*targetX*speed/sqrt(targetX*targetX+targetY*targetY)*/;
+
+    }
+    else if(tim<a)
+    {
+      opp+=255/a;
+    }
+    tim++;
+  } 
+  void fire(float xL1, float yL1, float k,float l )
+  {
+    changeColor();
+    
+    rn=1;
+    x=I.x;
+    y=I.y;
+    while(sqrt(sq(x-I.x)+sq(y-I.y))<50)
+    {
+      x=xL1;
+      y=yL1;
+      if(nAr<1 && xL==xL1)
+      {
+        y=random(height);
+        x=random(width);
+        xL=width/2;
+        yL=height/2;
+      }
+      if(nAr2<2 && xL2==xL1)
+      {
+        y=random(height);
+        x=random(width);
+        xL2=width/2;
+        yL2=height/2;
+      }
+      spArY=speed*sin(l*nAr);/*targetY*speed/sqrt(targetX*targetX+targetY*targetY)*/;
+      spArX=speed*cos(k*nAr)/*targetX*speed/sqrt(targetX*targetX+targetY*targetY)*/;
+      if(xL1==xL)break;
+    }
+   if(nAr<arrows.length-1)
+     nAr++;
+   if(nAr2<ar2.length-1)
+     nAr2++;
+    tim=0;
+    opp=0;
+  }
+  
+  void death()
+  {
+    if(sqrt(sq(I.x-x)+sq(I.y-y))<=(w+I.w)/2)
+    {
+      death=true;
+    }
+  }
+  
+  void changeColor()
+  {
+    float k=1.78;
+    colorMode(HSB);
+    if(nAr<500)
+      col=color(0+nAr/k,255,255);
+    else
+      col=color(0+(nAr-500)/k,255,255);
+  }
+  
+  void rikoshet(boolean rx, boolean ry)
+  {
+    if(rn>0)
+    {
+      if(rx)
+      {
+        if(x>width || x<0)
+        {
+          spArX=-spArX;
+          rn--;
+        }
+      }
+        if(ry)
+        {
+          if(y>height ||y<0)
+          {
+            spArY=-spArY;
+            rn--;
+          }
+        }
+    }
+  }
+}

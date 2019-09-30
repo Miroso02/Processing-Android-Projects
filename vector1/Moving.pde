@@ -1,0 +1,4 @@
+interface Moving
+{
+  void fire();
+}

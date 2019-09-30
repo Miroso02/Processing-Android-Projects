@@ -1,0 +1,117 @@
+import android.media.*;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+MediaPlayer snd=new MediaPlayer();
+
+Me I=new Me(500, 500, 5, 10);
+Arrow[] arrows=new Arrow[1000], ar2=new Arrow[1000];
+float xx=0, yy=0, targetX, targetY;
+boolean doing, death=false, menu=false;
+Button restart,kb,kb2;
+int nAr=0, nAr2=1, record=0;
+int dif=1;
+float km=1;
+float xL, yL, xL2, yL2;
+
+void setup()
+{
+  /*try
+  {
+  AssetFileDescriptor file1=getAssets().openFd("AliceMargTheme.mp3");
+  snd.setDataSource(file1.getFileDescriptor(), file1.getStartOffset(), file1.getLength());
+  snd.prepare();
+  snd.start();
+  print(1);
+  }
+  catch(IOException e){e.printStackTrace();}
+  catch(java.lang.NullPointerException e){e.printStackTrace();}
+*/
+  for (int i=0; i<arrows.length; i++)
+    arrows[i]=new Arrow(-100, -100, 3, 10);
+  for (int i=0; i<ar2.length; i++)
+    ar2[i]=new Arrow(-100, -100, 3, 10);
+  size(displayWidth, displayHeight);
+  nAr=0;
+  nAr2=1;
+  record=0;
+  death=false;
+  restart=new Button(width/2-100, height/2+100, 400, 100);
+  kb=new Button(0,0,100,100);
+  kb2=new Button(100,0,100,100);
+  I.spX=0;
+  I.spY=0;
+  I.x=500;
+  I.y=500;
+  for (int i=0; i<menuButtons.length; i++)
+  {
+    menuButtons[i]=new Button(0, 0, 0, 0);
+  }
+  menuButtons[1]=new Button(width/2-100, 100, 100, 50);
+}
+void draw()
+{
+ /* if(!snd.isPlaying())
+  {
+    snd.reset();
+    snd.start();
+  }*/
+  if (menu)
+    menu();
+  else
+  {
+    background(0);
+    fill(0, 0, 255);
+    if (!death)
+    {
+      I.move();
+    //  I.boom();
+      I.display();
+    }
+    else
+    {
+      restart.display("Restart");
+      
+      textSize(60);
+      textAlign(CENTER);
+      text(record, width/2, height/2);
+      
+      if (restart.pressed())
+      {
+        setup();
+      }
+    }
+    if(nAr>=arrows.length-2)
+      nAr=0;
+    if(nAr2>=ar2.length-2)
+      nAr2=1;
+      
+    for(int a=0;a<1;a++)
+    {
+      arrows[nAr+a].fire(xL,yL, km,km );
+      ar2[nAr2+a].fire(xL2,yL2, km,-km );
+    }
+    for (int i=0; i<arrows.length; i++)
+    {
+      arrows[i].display();
+      arrows[i].death();
+      arrows[i].move();
+      ar2[i].display();
+      ar2[i].death();
+      ar2[i].move();
+    }
+    textSize(20);
+    fill(255);
+    text(km,200,200);
+    kb.display("");
+    if(kb.pressed())km+=0.01;
+    kb2.display("");
+    if(kb2.pressed())km-=0.01;
+    km-=0.0001;
+  }
+  
+}
+void onBackPressed()
+{
+  death=true;
+  menu=true;
+}
